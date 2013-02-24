@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from flask import Flask, request, render_template, g, send_from_directory
+from flask import (Flask, request, render_template, g, send_from_directory,
+    jsonify)
                 #url_for, redirect
 from datetime import datetime, timedelta
 import sqlite3
@@ -138,7 +139,10 @@ def search_json():
          {2}'''.format(campus, now, search_terms)
     result = query_db(query)
     if not result:
-        return render_template('json_results.html', now=now, gaps=None)
+        resp = {"error":
+                ("There is no data available. Either it's late and the "
+                 "buildings are closed, or your search turned up nothing.")}
+        return jsonify(**resp)
     for d in result:
         if "start" in d:
             d["start"] = hmtime(d["start"])
@@ -163,7 +167,11 @@ def search_json():
                 d["roomnum"] = split["room"]
         except Exception:
             pass
-    return render_template('json_results.html', now=now, gaps=result)
+    # http://flask.pocoo.org/docs/security/#json-security
+    # Top-level arrays is a bad practice in json. Change API
+    # (JS or other code using this API, I mean) to consume
+    # room data as {"rooms": [...]}
+    return jsonify(rooms=result)
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -188,7 +196,9 @@ def search():
 
 @app.route('/spaceinfo.json', methods=['GET'])
 def json_space_info():
-    spaceID = request.args.get('spaceID', 0)
+    spaceID = request.args.get('spaceID', None)
+    if spaceID is None:  # no spaceID given
+        return jsonify(error="Space ID must be given.")
     query = '''
         SELECT roomname, capacity, seat_type, chalk, marker, spaceID
         FROM classrooms WHERE spaceID='{}' '''.format(spaceID)
@@ -198,7 +208,7 @@ def json_space_info():
     except IndexError:
         info = results
     info["room_url"] = room_url(info["spaceID"])
-    return render_template('json_classroom_info.html', info=info)
+    return jsonify(**info)
 
 @app.route('/spaceinfo', methods=['GET'])
 def space_info():
