@@ -90,14 +90,17 @@ def init(campus):
         times = []
         for start_time, end_time in zip(start_times, end_times):
             # Strip colon, AM/PM and spaces
-            f_start_time = strptime(start_time, "%I:%M %p")
-            s_time = datetime.datetime(today.year, today.month, today.day, \
-                    f_start_time.tm_hour, f_start_time.tm_min)
-            f_end_time = strptime(end_time, "%I:%M %p")
-            e_time = datetime.datetime(today.year, today.month, today.day, \
-                    f_end_time.tm_hour, f_end_time.tm_min)
-            #events dict, key=spaceID, value=[start time, end time]
-            times.append((s_time, e_time))
+            try:
+                f_start_time = strptime(start_time, "%I:%M %p")
+                s_time = datetime.datetime(today.year, today.month, today.day, \
+                        f_start_time.tm_hour, f_start_time.tm_min)
+                f_end_time = strptime(end_time, "%I:%M %p")
+                e_time = datetime.datetime(today.year, today.month, today.day, \
+                        f_end_time.tm_hour, f_end_time.tm_min)
+                #events dict, key=spaceID, value=[start time, end time]
+                times.append((s_time, e_time))
+            except ValueError:
+                continue
         events[sid] = times
 
     # insert gaps

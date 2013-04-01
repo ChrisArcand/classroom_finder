@@ -19,7 +19,7 @@ At the moment, it's hosted [here](http://brontasaur.us)
 
 ### Starting the app
 To get started:
-- make sure you have pip and virtualenv
+- make sure you have pip, virtualenv, and sqlite3 installed
 - `virtualenv venv`
 - `. venv/bin/activate`
 - `pip install -r requirements.pip`
