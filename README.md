@@ -1,7 +1,8 @@
 ## UMN classroom schedule listing
 
 Warning: __RETIRED__
-Note: Astra scheduler has replaced the backend that this was consuming and won't be updated to accommodate it.
+
+Astra scheduler has replaced the backend that this was consuming and won't be updated to accommodate it.
 
 This project seeks to create an easy interface to UMN classroom schedules by providing a 
 lookup for gaps in classroom usage along with classroom info.  
