@@ -1,6 +1,7 @@
-## UMN classroom schedule listing  
+## UMN classroom schedule listing
 
-Note: this code is in flux because of the retiring of the UMN's R25 system.
+Warning: __RETIRED__
+Note: Astra scheduler has replaced the backend that this was consuming and won't be updated to accommodate it.
 
 This project seeks to create an easy interface to UMN classroom schedules by providing a 
 lookup for gaps in classroom usage along with classroom info.  
@@ -19,5 +20,3 @@ To get started:
 - `. venv/bin/activate`
 - `pip install -r requirements.pip`
 - `python app.py`
-
-At the moment, it's hosted [here](http://brontasaur.us)
